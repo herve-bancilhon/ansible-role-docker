@@ -17,6 +17,18 @@
     state: "{{ docker_service_state }}"
     enabled: "{{ docker_service_enabled }}"
 
+- name: Create systemd drop-in directory for docker
+  become: yes
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Copy the proxy conf
+  become: yes
+  template:
+    src: templates/20-proxy.conf.j2
+    dest: /etc/systemd/system/docker.service.d/20-proxy.conf
+
 - name: Ensure handlers are notified now to avoid firewall conflicts.
   meta: flush_handlers
 
