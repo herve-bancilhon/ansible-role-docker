@@ -29,6 +29,14 @@
     src: templates/20-proxy.conf.j2
     dest: /etc/systemd/system/docker.service.d/20-proxy.conf
 
+- name: Reload systemctl
+  become: yes
+  command: systemctl daemon-reload
+
+- name: Pause for 15 seconds to see if the reload is fine
+  pause:
+    seconds: 15
+    
 - name: Ensure handlers are notified now to avoid firewall conflicts.
   meta: flush_handlers
 
