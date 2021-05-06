@@ -1,5 +1,9 @@
 ---
 - name: Ensure old versions of Docker are not installed.
+  retries: 10
+  delay: 60
+  register: result
+  until: result is not failed
   package:
     name:
       - docker
